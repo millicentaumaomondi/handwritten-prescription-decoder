@@ -12,7 +12,7 @@ import io
 project_root = str(Path(__file__).parent.parent)
 sys.path.append(project_root)
 
-from frontend.inference.model_loader import load_models
+from frontend.inference.model_loader import load_all_models
 from frontend.inference.predict import predict_image
 
 app = FastAPI(
@@ -32,15 +32,20 @@ app.add_middleware(
 
 # Initialize models
 try:
-    model, vocab, char_to_idx, idx_to_char, ngram_model = load_models()
+    model, tokenizer, gpt_lm, ngram_lm, vocab, idx_to_char = load_all_models(
+        model_path=os.path.join(project_root, "frontend", "weights", "best_model_weights.pth"),
+        ngram_path=os.path.join(project_root, "frontend", "weights", "ngram.pkl"),
+        label_file=os.path.join(project_root, "frontend", "data", "training_labels.csv")
+    )
     print("Models loaded successfully")
 except Exception as e:
     print(f"Error loading models: {str(e)}")
     model = None
+    tokenizer = None
+    gpt_lm = None
+    ngram_lm = None
     vocab = None
-    char_to_idx = None
     idx_to_char = None
-    ngram_model = None
 
 @app.get("/")
 async def root():
@@ -67,7 +72,7 @@ async def predict(file: UploadFile = File(...)):
             image = image.convert('RGB')
         
         # Get prediction
-        prediction = predict_image(image, model, vocab, char_to_idx, idx_to_char, ngram_model)
+        prediction = predict_image(image, model, vocab, idx_to_char, ngram_lm, gpt_lm, tokenizer)
         
         return {"prediction": prediction}
     except Exception as e:
