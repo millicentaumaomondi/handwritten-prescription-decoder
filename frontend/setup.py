@@ -5,7 +5,7 @@ setup(
     version="1.0.0",
     packages=find_packages(),
     install_requires=[
-        "streamlit==1.31.0",
+        "streamlit==1.32.0",
         "Pillow==10.2.0",
         "requests==2.31.0",
         "reportlab==4.0.9",
