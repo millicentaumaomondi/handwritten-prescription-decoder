@@ -1,3 +1,6 @@
+# RxVision: Handwritten Prescription Decoder
+# Note: Backend API implements rate limiting (3 requests/minute for predictions)
+
 import streamlit as st
 import os
 import io
