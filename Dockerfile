@@ -12,14 +12,18 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Create directories for weights and data
-RUN mkdir -p frontend/weights
+RUN mkdir -p frontend/weights frontend/data
 
 # Copy only necessary files first
 COPY backend/ backend/
 COPY frontend/app.py frontend/
 COPY frontend/utils.py frontend/
 COPY frontend/inference/ frontend/inference/
+COPY frontend/data/training_labels.csv frontend/data/
 COPY download_weights.py .
+
+# Download model weights during build
+RUN python download_weights.py
 
 # Expose the port the app runs on
 EXPOSE 8000
