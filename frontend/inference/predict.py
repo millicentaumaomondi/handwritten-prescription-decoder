@@ -1,4 +1,3 @@
-
 import torch
 import torch.nn.functional as F
 from torchvision import transforms
@@ -45,7 +44,7 @@ def preprocess_image(image: Image.Image):
 # --- Beam Search Decoding with optional LM ---
 def beam_search_with_ctc_and_lm(
     logits, idx_to_char, beam_width=10, blank_index=0,
-    ngram_lm=None, gpt_lm=None, tokenizer=None, lm_weight=0.4
+    ngram_lm=None, gpt_lm=None, tokenizer=None, lm_weight=0.4, vocab=None
 ):
     T, B, C = logits.shape
     probs = F.softmax(logits, dim=2)
@@ -95,13 +94,14 @@ def beam_search_with_ctc_and_lm(
     return results
 
 # --- Inference wrapper ---
-def predict_image(image: Image.Image, model, idx_to_char, ngram_lm=None, gpt_lm=None, tokenizer=None):
+def predict_image(image: Image.Image, model, idx_to_char, vocab=None, ngram_lm=None, gpt_lm=None, tokenizer=None):
     image_tensor = preprocess_image(image).to(next(model.parameters()).device)
     with torch.no_grad():
         logits = model(image_tensor)
     prediction = beam_search_with_ctc_and_lm(
         logits,
         idx_to_char=idx_to_char,
+        vocab=vocab,
         ngram_lm=ngram_lm,
         gpt_lm=gpt_lm,
         tokenizer=tokenizer,

@@ -91,6 +91,7 @@ async def predict(file: UploadFile = File(...)):
             image=image,
             model=model,
             idx_to_char=idx_to_char,
+            vocab=vocab,
             ngram_lm=ngram_lm,
             gpt_lm=gpt_lm,
             tokenizer=tokenizer
