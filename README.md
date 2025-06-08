@@ -174,4 +174,28 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ##  Contact
 
-For questions or support, please open an issue in the GitHub repository. 
+For questions or support, please open an issue in the GitHub repository.
+
+## API Usage Guidelines
+
+### Rate Limits
+The API implements rate limiting to ensure fair usage and system stability:
+
+| Endpoint | Rate Limit | Purpose |
+|----------|------------|----------|
+| `/` | 5 requests/minute | General API information |
+| `/health` | 10 requests/minute | System health monitoring |
+| `/predict` | 3 requests/minute | Prescription decoding |
+
+When rate limits are exceeded, the API will return a `429 Too Many Requests` response:
+```json
+{
+    "detail": "Rate limit exceeded: X per 1 minute"
+}
+```
+
+### Best Practices
+1. Implement exponential backoff when receiving 429 responses
+2. Cache health check results locally
+3. Batch predictions when possible
+4. Monitor your API usage to stay within limits 
