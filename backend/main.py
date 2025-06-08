@@ -87,7 +87,14 @@ async def predict(file: UploadFile = File(...)):
             image = image.convert('RGB')
         
         # Get prediction
-        prediction = predict_image(image, model, vocab, idx_to_char, ngram_lm, gpt_lm, tokenizer)
+        prediction = predict_image(
+            image=image,
+            model=model,
+            idx_to_char=idx_to_char,
+            ngram_lm=ngram_lm,
+            gpt_lm=gpt_lm,
+            tokenizer=tokenizer
+        )
         
         return {"prediction": prediction}
     except Exception as e:
