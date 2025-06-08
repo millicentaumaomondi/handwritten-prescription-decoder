@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 import torch
 from PIL import Image
 import io
+import gdown
 
 # Add the project root to Python path
 project_root = str(Path(__file__).parent.parent)
@@ -14,6 +15,19 @@ sys.path.append(project_root)
 
 from frontend.inference.model_loader import load_all_models
 from frontend.inference.predict import predict_image
+
+def download_model_weights():
+    """Download the model weights file from Google Drive."""
+    weights_dir = os.path.join(project_root, "frontend", "weights")
+    os.makedirs(weights_dir, exist_ok=True)
+    
+    model_path = os.path.join(weights_dir, "best_model_weights.pth")
+    if not os.path.exists(model_path):
+        print("Downloading model weights...")
+        file_id = "1nWWGSed3cJv5H6UKewvAkLyKcTawtBzs"
+        url = f"https://drive.google.com/uc?id={file_id}"
+        gdown.download(url, model_path, quiet=False)
+        print("Model weights downloaded successfully")
 
 app = FastAPI(
     title="RxVision API",
@@ -32,6 +46,7 @@ app.add_middleware(
 
 # Initialize models
 try:
+    download_model_weights()  # Download model weights if needed
     model, tokenizer, gpt_lm, ngram_lm, vocab, idx_to_char = load_all_models(
         model_path=os.path.join(project_root, "frontend", "weights", "best_model_weights.pth"),
         ngram_path=os.path.join(project_root, "frontend", "weights", "ngram.pkl"),
