@@ -1,0 +1,28 @@
+# fly.toml app configuration file generated for handwritten-prescription-decoder on 2025-06-08T23:44:48+03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "handwriting-decoder"
+primary_region = "lax"
+
+[build]
+  dockerfile = "Dockerfile"
+  [build.args]
+    BUILD_TIMEOUT = "1800"
+
+[env]
+  PORT = "8000"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 2048
