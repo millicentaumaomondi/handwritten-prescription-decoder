@@ -11,22 +11,25 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Create directories for weights and data
+# Create necessary directories
 RUN mkdir -p frontend/weights frontend/data
 
-# Copy only necessary files first
+# Copy application code
 COPY backend/ backend/
 COPY frontend/app.py frontend/
 COPY frontend/utils.py frontend/
 COPY frontend/inference/ frontend/inference/
 COPY frontend/data/training_labels.csv frontend/data/
-COPY download_weights.py .
 
-# Download model weights during build
+# Download model weights
+COPY download_weights.py .
 RUN python download_weights.py
 
-# Expose the port the app runs on
+# Set environment variables
+ENV PYTHONPATH=/app
+
+# Expose port
 EXPOSE 8000
 
-# Command to run the application
+# Run the application
 CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"] 
