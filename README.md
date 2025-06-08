@@ -2,7 +2,7 @@
 
 A deep learning-powered application that decodes handwritten prescriptions and identifies medicine names, helping to reduce medication errors and improve healthcare efficiency.
 
-## 🌟 Overview
+## Overview
 
 RxVision is a full-stack application that combines computer vision and natural language processing to decode handwritten prescriptions. It addresses a critical challenge in healthcare: the interpretation of handwritten medical prescriptions, which can be prone to errors and misinterpretation.
 
@@ -13,7 +13,7 @@ RxVision is a full-stack application that combines computer vision and natural l
 - **Enhances Accessibility**: Makes prescription information more accessible and readable for patients and healthcare providers.
 - **Educational Value**: Serves as a learning tool for understanding the intersection of healthcare and AI.
 
-## 🏗️ Architecture
+##  Architecture
 
 The application consists of two main components:
 
@@ -29,7 +29,7 @@ The application consists of two main components:
 - Handles image upload and display
 - Manages user sessions and history
 
-## 🤖 Models Used
+##  Models Used
 
 ### 1. CRNN with EfficientNet-B4 Backbone
 - **Purpose**: Handwritten text recognition
@@ -53,7 +53,7 @@ The application consists of two main components:
   - Helps with spelling and grammar correction
   - Enhances prediction quality
 
-## 🚀 Deployment Guide
+##  Deployment Guide
 
 ### Backend Deployment (Fly.io)
 
@@ -142,7 +142,7 @@ The application consists of two main components:
    streamlit run frontend/app.py
    ```
 
-## 📊 Model Training
+##  Model Training
 
 The models are trained on a dataset of handwritten prescriptions with the following characteristics:
 - Character-level vocabulary
@@ -156,7 +156,7 @@ Training process:
 3. Language model integration
 4. Validation and testing
 
-## 🔒 Security
+##  Security
 
 - User authentication for frontend access
 - API rate limiting
@@ -164,14 +164,14 @@ Training process:
 - Input validation
 - Error handling
 
-## 📝 License
+##  License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📧 Contact
+##  Contact
 
 For questions or support, please open an issue in the GitHub repository. 
