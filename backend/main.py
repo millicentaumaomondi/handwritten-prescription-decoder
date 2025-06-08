@@ -1,13 +1,16 @@
 import os
 import sys
 from pathlib import Path
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import torch
 from PIL import Image
 import io
 import gdown
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 # Add the project root to Python path
 project_root = str(Path(__file__).parent.parent)
@@ -15,6 +18,9 @@ sys.path.append(project_root)
 
 from frontend.inference.model_loader import load_all_models
 from frontend.inference.predict import predict_image
+
+# Initialize rate limiter
+limiter = Limiter(key_func=get_remote_address)
 
 def download_model_weights():
     """Download the model weights file from Google Drive."""
@@ -34,6 +40,10 @@ app = FastAPI(
     description="API for handwritten prescription decoding",
     version="1.0.0"
 )
+
+# Add rate limiter to app
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Add CORS middleware
 app.add_middleware(
@@ -63,17 +73,20 @@ except Exception as e:
     idx_to_char = None
 
 @app.get("/")
-async def root():
+@limiter.limit("5/minute")  # 5 requests per minute
+async def root(request: Request):
     return {"message": "Welcome to RxVision API"}
 
 @app.get("/health")
-async def health_check():
+@limiter.limit("10/minute")  # 10 requests per minute
+async def health_check(request: Request):
     if model is None:
         raise HTTPException(status_code=503, detail="Models not loaded")
     return {"status": "healthy", "models_loaded": True}
 
 @app.post("/predict")
-async def predict(file: UploadFile = File(...)):
+@limiter.limit("3/minute")  # 3 requests per minute
+async def predict(request: Request, file: UploadFile = File(...)):
     if model is None:
         raise HTTPException(status_code=503, detail="Models not loaded")
     
