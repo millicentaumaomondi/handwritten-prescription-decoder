@@ -39,5 +39,8 @@ Thumbs.db
 # Model files
 frontend/weights/*.pth
 frontend/weights/*.pkl
+
+# Data files
 *.csv
+!frontend/data/training_labels.csv
 *.pdf 
