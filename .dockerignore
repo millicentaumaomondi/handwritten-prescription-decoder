@@ -37,12 +37,13 @@
 **/Thumbs.db
 
 # Project specific
-# Model files
-**/frontend/weights/*.pth
-**/frontend/weights/*.pkl
+# Keep model files and training labels
+!**/frontend/weights/*.pth
+!**/frontend/weights/*.pkl
+!**/frontend/data/training_labels.csv
 
 # Data files
 **/*.csv
 !**/frontend/data/training_labels.csv
-**/*.pdf 
+**/*.pdf
 fly.toml
