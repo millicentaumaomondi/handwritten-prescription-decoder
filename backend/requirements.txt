@@ -5,4 +5,5 @@ torch==2.2.0
 torchvision==0.17.0
 Pillow==10.2.0
 transformers==4.37.2
-numpy==1.26.3 
+numpy==1.26.3
+gdown==4.7.3 
