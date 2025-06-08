@@ -10,7 +10,8 @@ setup(
         "requests==2.31.0",
         "reportlab==4.0.9",
         "numpy==1.26.3",
-        "pandas==2.2.0"
+        "pandas==2.2.0",
+        "fpdf==1.7.2"
     ],
     python_requires=">=3.9",
 ) 
