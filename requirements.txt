@@ -11,5 +11,7 @@ pandas==2.2.0
 scikit-learn==1.4.0
 slowapi==0.1.9
 matplotlib==3.8.2
-streamlit==1.31.0
+streamlit==1.32.0
 requests==2.31.0
+reportlab==4.0.9  # For PDF generation
+fpdf==1.7.2
