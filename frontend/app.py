@@ -96,7 +96,7 @@ def dashboard():
                 else:
                     image = Image.open(uploaded_file)
                 
-                st.image(image, caption="Selected Image", use_container_width=True)
+                st.image(image, caption="Selected Image", use_column_width=True)
 
                 if st.button("🔍 Predict"):
                     with st.spinner("Analyzing..."):
