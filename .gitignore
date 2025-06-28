@@ -36,11 +36,11 @@ ENV/
 Thumbs.db
 
 # Project specific
-# Model files
-frontend/weights/*.pth
-frontend/weights/*.pkl
+# Model files (downloaded at runtime from Google Drive)
+backend/weights/*.pth
+backend/weights/*.pkl
 
 # Data files
 *.csv
-!frontend/data/training_labels.csv
+!backend/data/training_labels.csv
 *.pdf 
