@@ -84,14 +84,26 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
-    /* Primary button styling - green color */
-    .stButton > button[data-baseweb="button"] {
+    /* Primary button styling - green color for Predict Medicine button */
+    .stButton > button[data-testid="baseButton-primary"] {
         background-color: #28a745 !important;
         border-color: #28a745 !important;
         color: white !important;
     }
     
-    .stButton > button[data-baseweb="button"]:hover {
+    .stButton > button[data-testid="baseButton-primary"]:hover {
+        background-color: #218838 !important;
+        border-color: #1e7e34 !important;
+    }
+    
+    /* Alternative selector for primary buttons */
+    .stButton > button[data-baseweb="button"][data-testid="baseButton-primary"] {
+        background-color: #28a745 !important;
+        border-color: #28a745 !important;
+        color: white !important;
+    }
+    
+    .stButton > button[data-baseweb="button"][data-testid="baseButton-primary"]:hover {
         background-color: #218838 !important;
         border-color: #1e7e34 !important;
     }
