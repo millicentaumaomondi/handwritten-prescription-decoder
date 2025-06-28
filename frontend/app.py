@@ -36,24 +36,26 @@ st.markdown("""
         margin-bottom: 1.5rem !important;
     }
     
-    /* Welcome message styling */
+    /* Welcome message styling - darker and bolder */
     .welcome-text {
         font-size: 1.1rem !important;
         line-height: 1.6 !important;
-        color: #34495e !important;
+        color: #1a1a1a !important;
+        font-weight: 600 !important;
         margin-bottom: 1.5rem !important;
     }
     
-    /* Instructions styling */
+    /* Instructions styling - better color blending with blue theme */
     .instructions {
         font-size: 1rem !important;
         line-height: 1.7 !important;
-        color: #555 !important;
-        background-color: #f8f9fa !important;
+        color: #ffffff !important;
+        background: linear-gradient(135deg, #1f77b4 0%, #2c5aa0 100%) !important;
         padding: 1.2rem !important;
         border-radius: 8px !important;
-        border-left: 4px solid #1f77b4 !important;
+        border-left: 4px solid #ffffff !important;
         margin-bottom: 1.5rem !important;
+        box-shadow: 0 4px 8px rgba(31, 119, 180, 0.3) !important;
     }
     
     /* Container to limit width and center content */
@@ -81,7 +83,7 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
-    /* Tab styling */
+    /* Tab styling - fix text visibility */
     .stTabs [data-baseweb="tab-list"] {
         gap: 6px !important;
     }
@@ -94,11 +96,18 @@ st.markdown("""
         gap: 0.5rem !important;
         padding-top: 8px !important;
         padding-bottom: 8px !important;
+        color: #2c3e50 !important;
+        font-weight: 600 !important;
     }
     
     .stTabs [aria-selected="true"] {
         background-color: #1f77b4 !important;
         color: white !important;
+    }
+    
+    .stTabs [aria-selected="false"] {
+        color: #2c3e50 !important;
+        background-color: #e9ecef !important;
     }
     
     /* Success message styling */
