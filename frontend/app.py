@@ -40,7 +40,7 @@ st.markdown("""
     .welcome-text {
         font-size: 1.1rem !important;
         line-height: 1.6 !important;
-        color: #000000 !important;
+        color: #1f77b4 !important;
         font-weight: 700 !important;
         margin-bottom: 1.5rem !important;
     }
