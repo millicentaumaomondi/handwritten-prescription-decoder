@@ -12,19 +12,19 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
-# Add the project root to Python path
-project_root = str(Path(__file__).parent.parent)
-sys.path.append(project_root)
+# Add the backend directory to Python path
+backend_dir = str(Path(__file__).parent)
+sys.path.append(backend_dir)
 
-from frontend.inference.model_loader import load_all_models
-from frontend.inference.predict import predict_image
+from inference.model_loader import load_all_models
+from inference.predict import predict_image
 
 # Initialize rate limiter
 limiter = Limiter(key_func=get_remote_address)
 
 def download_model_weights():
     """Download the model weights file from Google Drive."""
-    weights_dir = os.path.join(project_root, "frontend", "weights")
+    weights_dir = os.path.join(backend_dir, "weights")
     os.makedirs(weights_dir, exist_ok=True)
     
     model_path = os.path.join(weights_dir, "best_model_weights.pth")
@@ -58,9 +58,9 @@ app.add_middleware(
 try:
     download_model_weights()  # Download model weights if needed
     model, tokenizer, gpt_lm, ngram_lm, vocab, idx_to_char = load_all_models(
-        model_path=os.path.join(project_root, "frontend", "weights", "best_model_weights.pth"),
-        ngram_path=os.path.join(project_root, "frontend", "weights", "ngram.pkl"),
-        label_file=os.path.join(project_root, "frontend", "data", "training_labels.csv")
+        model_path=os.path.join(backend_dir, "weights", "best_model_weights.pth"),
+        ngram_path=os.path.join(backend_dir, "weights", "ngram.pkl"),
+        label_file=os.path.join(backend_dir, "data", "training_labels.csv")
     )
     print("Models loaded successfully")
 except Exception as e:

@@ -12,7 +12,7 @@ from utils import export_history_as_csv, export_history_as_pdf
 st.set_page_config(page_title="📋 RxVision: Handwritten Prescription Decoder 💊", layout="centered")
 
 # API endpoint
-API_URL = "https://handwriting-decoder.fly.dev"  # Updated to use Fly.io backend
+API_URL = "http://localhost:8000"  # Local backend for testing
 
 # --- Login page ---
 def login():
