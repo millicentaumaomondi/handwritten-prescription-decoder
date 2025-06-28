@@ -7,6 +7,7 @@ import io
 import requests
 from PIL import Image
 from utils import export_history_as_csv, export_history_as_pdf
+import time
 
 # Set Streamlit page config FIRST - Use wide layout for better screen utilization
 st.set_page_config(
@@ -155,6 +156,17 @@ st.markdown("""
 # API endpoint
 API_URL = "https://handwriting-decoder.fly.dev"  # Deployed backend
 
+def check_backend_health():
+    """Check if the backend is healthy and ready"""
+    try:
+        response = requests.get(f"{API_URL}/health", timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            return data.get('models_loaded', False)
+        return False
+    except:
+        return False
+
 # --- Login page ---
 def login():
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
@@ -234,28 +246,66 @@ def dashboard():
                 # Display image with better aspect ratio control
                 st.image(image, caption="Selected Image", width=400)
 
-                if st.button("🔍 Predict"):
-                    with st.spinner("Analyzing..."):
+                # Prediction button
+                if st.button("🔍 Predict Medicine", use_container_width=True, type="primary"):
+                    # Check backend health first
+                    if not check_backend_health():
+                        st.warning("⚠️ Backend is starting up. This may take 30-60 seconds on first request. Please wait...")
+                        with st.spinner("🔄 Waiting for backend to be ready..."):
+                            # Wait for backend to be ready
+                            for i in range(30):  # Wait up to 30 seconds
+                                if check_backend_health():
+                                    st.success("✅ Backend is ready!")
+                                    break
+                                time.sleep(1)
+                            else:
+                                st.error("❌ Backend is taking too long to start. Please try again in a few minutes.")
+                                st.stop()
+                    
+                    with st.spinner("🤖 AI is analyzing your prescription..."):
                         # Prepare the image for API
                         img_byte_arr = io.BytesIO()
                         image.save(img_byte_arr, format='PNG')
                         img_byte_arr = img_byte_arr.getvalue()
 
-                        # Send to API
-                        files = {'file': ('image.png', img_byte_arr, 'image/png')}
-                        response = requests.post(f"{API_URL}/predict", files=files)
-                        
-                        if response.status_code == 200:
-                            prediction = response.json()['prediction']
-                            st.markdown(f'<div class="success-msg">🧾 Predicted Medicine: <strong>{prediction}</strong></div>', unsafe_allow_html=True)
-                            # Use the stored display filename
-                            filename = display_filename if 'display_filename' in locals() else os.path.basename(uploaded_file.name)
-                            st.session_state.history.append({
-                                "filename": filename,
-                                "prediction": prediction
-                            })
-                        else:
-                            st.error(f"Error from API: {response.text}")
+                        # Send to API with retry logic
+                        max_retries = 3
+                        for attempt in range(max_retries):
+                            try:
+                                files = {'file': ('image.png', img_byte_arr, 'image/png')}
+                                response = requests.post(f"{API_URL}/predict", files=files, timeout=30)
+                                
+                                if response.status_code == 200:
+                                    prediction = response.json()['prediction']
+                                    st.markdown(f'<div class="success-msg">🧾 Predicted Medicine: <strong>{prediction}</strong></div>', unsafe_allow_html=True)
+                                    # Use the stored display filename
+                                    filename = display_filename if 'display_filename' in locals() else os.path.basename(uploaded_file.name)
+                                    st.session_state.history.append({
+                                        "filename": filename,
+                                        "prediction": prediction
+                                    })
+                                    break  # Success, exit retry loop
+                                else:
+                                    if attempt < max_retries - 1:
+                                        st.warning(f"Attempt {attempt + 1} failed. Retrying... (Backend might be starting up)")
+                                        time.sleep(2)  # Wait 2 seconds before retry
+                                    else:
+                                        st.error(f"Error from API after {max_retries} attempts: {response.text}")
+                            except requests.exceptions.Timeout:
+                                if attempt < max_retries - 1:
+                                    st.warning(f"Request timed out (attempt {attempt + 1}). Retrying... (Backend is starting up)")
+                                    time.sleep(3)  # Wait 3 seconds before retry
+                                else:
+                                    st.error("Request timed out after multiple attempts. The backend might be starting up. Please try again in a few seconds.")
+                            except requests.exceptions.ConnectionError:
+                                if attempt < max_retries - 1:
+                                    st.warning(f"Connection error (attempt {attempt + 1}). Retrying... (Backend is starting up)")
+                                    time.sleep(3)
+                                else:
+                                    st.error("Cannot connect to backend. The service might be starting up. Please try again in a few seconds.")
+                            except Exception as e:
+                                st.error(f"Unexpected error: {str(e)}")
+                                break
             except Exception as e:
                 st.error(f"Error processing image: {str(e)}")
 
