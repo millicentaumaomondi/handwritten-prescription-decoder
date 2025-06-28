@@ -125,10 +125,13 @@ st.markdown("""
     .history-item {
         font-size: 1rem !important;
         padding: 0.8rem !important;
-        background-color: #f8f9fa !important;
+        background-color: #ffffff !important;
         border-radius: 6px !important;
         margin-bottom: 0.5rem !important;
         border-left: 3px solid #1f77b4 !important;
+        color: #2c3e50 !important;
+        border: 1px solid #e9ecef !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
     }
     
     /* Responsive text sizing */
