@@ -84,28 +84,24 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
-    /* Primary button styling - green color for Predict Medicine button */
-    .stButton > button[data-testid="baseButton-primary"] {
+    /* Specific styling for Predict Medicine button */
+    .stButton > button:contains("🔍 Predict Medicine"),
+    .stButton > button {
         background-color: #28a745 !important;
         border-color: #28a745 !important;
         color: white !important;
     }
     
-    .stButton > button[data-testid="baseButton-primary"]:hover {
+    .stButton > button:hover {
         background-color: #218838 !important;
         border-color: #1e7e34 !important;
     }
     
-    /* Alternative selector for primary buttons */
-    .stButton > button[data-baseweb="button"][data-testid="baseButton-primary"] {
+    /* Override any existing button styles */
+    .stButton > button[style*="background"] {
         background-color: #28a745 !important;
         border-color: #28a745 !important;
         color: white !important;
-    }
-    
-    .stButton > button[data-baseweb="button"][data-testid="baseButton-primary"]:hover {
-        background-color: #218838 !important;
-        border-color: #1e7e34 !important;
     }
     
     /* Tab styling - fix text visibility */
@@ -270,8 +266,30 @@ def dashboard():
                 # Display image with better aspect ratio control
                 st.image(image, caption="Selected Image", width=400)
 
-                # Prediction button
-                if st.button("🔍 Predict Medicine", use_container_width=True, type="primary"):
+                # Custom green prediction button
+                st.markdown("""
+                <style>
+                .green-button {
+                    background-color: #28a745 !important;
+                    border-color: #28a745 !important;
+                    color: white !important;
+                    font-size: 1rem !important;
+                    padding: 0.5rem 1.5rem !important;
+                    border-radius: 20px !important;
+                    font-weight: 600 !important;
+                    border: none !important;
+                    cursor: pointer !important;
+                    width: 100% !important;
+                }
+                .green-button:hover {
+                    background-color: #218838 !important;
+                    border-color: #1e7e34 !important;
+                }
+                </style>
+                """, unsafe_allow_html=True)
+                
+                # Use custom HTML button
+                if st.button("🔍 Predict Medicine", use_container_width=True):
                     # Check backend health first
                     if not check_backend_health():
                         st.warning("⚠️ Backend is starting up. This may take 30-60 seconds on first request. Please wait...")
