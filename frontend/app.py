@@ -84,6 +84,18 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
+    /* Primary button styling - green color */
+    .stButton > button[data-baseweb="button"] {
+        background-color: #28a745 !important;
+        border-color: #28a745 !important;
+        color: white !important;
+    }
+    
+    .stButton > button[data-baseweb="button"]:hover {
+        background-color: #218838 !important;
+        border-color: #1e7e34 !important;
+    }
+    
     /* Tab styling - fix text visibility */
     .stTabs [data-baseweb="tab-list"] {
         gap: 6px !important;
