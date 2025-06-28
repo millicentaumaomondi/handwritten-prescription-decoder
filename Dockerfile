@@ -12,17 +12,13 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Create necessary directories
-RUN mkdir -p frontend/weights frontend/data
+RUN mkdir -p backend/weights backend/data
 
 # Copy application code
 COPY backend/ backend/
-COPY frontend/app.py frontend/
-COPY frontend/utils.py frontend/
-COPY frontend/inference/ frontend/inference/
-COPY frontend/data/training_labels.csv frontend/data/
+COPY download_weights.py .
 
 # Download model weights
-COPY download_weights.py .
 RUN python download_weights.py
 
 # Set environment variables

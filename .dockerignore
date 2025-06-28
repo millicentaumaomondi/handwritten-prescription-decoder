@@ -41,9 +41,11 @@
 !**/frontend/weights/*.pth
 !**/frontend/weights/*.pkl
 !**/frontend/data/training_labels.csv
+!backend/data/training_labels.csv
 
 # Data files
 **/*.csv
 !**/frontend/data/training_labels.csv
+!backend/data/training_labels.csv
 **/*.pdf
 fly.toml
