@@ -1,6 +1,7 @@
 # RxVision: Handwritten Prescription Decoder
 
 A deep learning-powered application that decodes handwritten prescriptions and identifies medicine names, helping to reduce medication errors and improve healthcare efficiency.
+To explore the RxVision web application, please click [here](https://handwritten-prescription-decoder-qs9zehxeapp6rw55zhcsnod.streamlit.app/).
 
 ## Overview
 
